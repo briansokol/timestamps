@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Timestamps
 
-## Getting Started
+This is an app you can run locally in a Docker container to manage timestamps. It comes with a UI and an API. The API is not secured, so I do not recommend deploying it anywhere public.
 
-First, run the development server:
+## Development
+
+### Database setup
+
+To create a new local database, run:
+
+```bash
+npm run db:migrate
+```
+
+### Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Lint files
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Database migrations
 
-## Learn More
+After making changes to `src/db/schema/schema.ts`, run this script to create a migration file:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run db:generate
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Then, apply the changes by running:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run db:migrate
+```
 
-## Deploy on Vercel
+## Deploying with Docker
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+First run this command once to create the Docker volume:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run docker:volume
+```
+
+Build the container image by running:
+
+```bash
+npm run docker:build
+```
+
+Finally, run the container by running:
+
+```bash
+npm run docker:run
+```
+
+You can do all of this with one command for the first run:
+
+```bash
+npm run docker
+```
+
+## Uninstalling
+
+Stop the running Docker container by running
+
+```bash
+npm run docker:stop
+```
+
+You can completely remove the container and volume by running the following command (this will destroy the database!):
+
+```bash
+npm run docker:remove
+```

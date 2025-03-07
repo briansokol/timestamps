@@ -6,12 +6,16 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 7623",
     "lint": "next lint",
-    "docker:build": "docker build -t timestamps .",
-    "docker:run": "docker run -p 3000:3000 timestamps",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx src/db/migrate.ts"
+    "db:migrate": "tsx src/db/migrate.ts",
+    "docker": "npm run docker:volume && npm run docker:build && npm run docker:run",
+    "docker:build": "docker build -t timestamps .",
+    "docker:run": "docker run -v timestamps_data:/app/sqlite -p 7623:7623 --name timestamps timestamps",
+    "docker:volume": "docker volume create timestamps_data",
+    "docker:stop": "docker stop timestamps && docker rm timestamps",
+    "docker:remove": "npm run docker:stop || docker volume rm timestamps_data"
   },
   "dependencies": {
     "@libsql/client": "0.14.0",
@@ -26,6 +30,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "3.3.0",
     "@tailwindcss/postcss": "4.0.11",
+    "@trivago/prettier-plugin-sort-imports": "5.2.2",
     "@types/node": "22.13.9",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
@@ -33,6 +38,7 @@
     "eslint": "9.21.0",
     "eslint-config-next": "15.2.1",
     "prettier": "3.5.3",
+    "prettier-plugin-tailwindcss": "0.6.11",
     "tailwindcss": "4.0.11",
     "tsx": "4.19.3",
     "typescript": "5.8.2"

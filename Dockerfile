@@ -1,17 +1,14 @@
-# Stage 1: Build
-FROM node:23 AS builder
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
+FROM node:23-alpine
+
+WORKDIR /app
+
 COPY . .
+RUN npm ci
 RUN npm run build
 
-# Stage 2: Serve
-FROM node:23-alpine
-WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/.next ./.next
-COPY --from=builder /usr/src/app/public ./public
-COPY --from=builder /usr/src/app/package.json ./package.json
+ENV NODE_ENV=production
+EXPOSE 7623
+
+RUN npm run db:migrate
 
 CMD ["npm", "start"]
