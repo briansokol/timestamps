@@ -15,6 +15,13 @@
       "when": 1741235544332,
       "tag": "0001_wooden_jazinda",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1741390816724,
+      "tag": "0002_flippant_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

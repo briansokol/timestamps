@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
-import { validateRequest } from '../../utils/validate';
-import { updateTimestampSchema } from '../../validations/timestamps';
+import { validateRequest } from '../../../../utils/validate';
+import { updateTimestampSchema } from '../../../../validations/timestamps';
 
 // Get a specific timestamp by ID
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

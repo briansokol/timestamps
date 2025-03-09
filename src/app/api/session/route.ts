@@ -1,7 +1,8 @@
+import { isNull, sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
-import { validateRequest } from '../utils/validate';
-import { createSessionSchema } from '../validations/sessions';
+import { validateRequest } from '@/utils/validate';
+import { createSessionSchema } from '@/validations/sessions';
 
 export async function POST(request: NextRequest) {
     // Validate the request using our validation utility
@@ -14,6 +15,14 @@ export async function POST(request: NextRequest) {
     try {
         // The data is now validated and typed
         const { title } = validation.data;
+
+        // First, find and close any open sessions
+        await db
+            .update(schema.session)
+            .set({
+                endedAt: sql`CURRENT_TIMESTAMP`,
+            })
+            .where(isNull(schema.session.endedAt));
 
         // Insert the new session into the database
         const result = await db

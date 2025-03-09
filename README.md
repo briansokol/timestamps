@@ -2,6 +2,14 @@
 
 This is an app you can run locally in a Docker container to manage timestamps. It comes with a UI and an API. The API is not secured, so I do not recommend deploying it anywhere public.
 
+This app can be used purely through the API or UI, or a combination of both.
+
+To use the app, first create a new session. This could be a live stream or a recording session, for example. Give it a name if you want, otherwise it will be named after the current day and time. Starting a session will automatically close the previous session (if one is open).
+
+Then, add timestamps. Timestamps will be added to the current session. If no session is active, one will be created.
+
+The UI will allow you to see the sessions and get timestamps in different formats.
+
 ## Development
 
 ### Database setup

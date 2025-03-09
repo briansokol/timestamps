@@ -2,7 +2,7 @@ import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import fs from 'node:fs';
 import { dirname, join } from 'node:path';
-import * as schema from '../db/schema/schema';
+import * as schema from '@/db/schema/schema';
 
 export const DB_PATH = 'sqlite/database.sqlite';
 

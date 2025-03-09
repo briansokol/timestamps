@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
-import { validateRequest } from '../utils/validate';
-import { createTimestampSchema } from '../validations/timestamps';
+import { validateRequest } from '../../../utils/validate';
+import { createTimestampSchema } from '../../../validations/timestamps';
 
 // Create a new timestamp
 export async function POST(request: NextRequest) {

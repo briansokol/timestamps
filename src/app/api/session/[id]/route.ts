@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
-import { validateRequest } from '../../utils/validate';
-import { updateSessionSchema } from '../../validations/sessions';
+import { validateRequest } from '@/utils/validate';
+import { updateSessionSchema } from '@/validations/sessions';
 
 // Update a specific session
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
