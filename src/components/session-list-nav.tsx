@@ -1,6 +1,7 @@
 import { Badge, Loader, NavLink, ScrollArea, Title } from '@mantine/core';
+import Link from 'next/link';
 import { useGetSessionList } from '@/hooks/sessions';
-import { formatDateTime } from '@/utils/dates';
+import { formatDateTime } from '@/utils/datetime';
 
 export function SessionListNav() {
     const { sessions, isLoading, error } = useGetSessionList();
@@ -16,25 +17,16 @@ export function SessionListNav() {
     return (
         <div>
             <Title order={3}>Sessions</Title>
-            <ScrollArea
-                h={250}
-                offsetScrollbars
-                overscrollBehavior="contain"
-                scrollbarSize={20}
-                scrollHideDelay={500}
-            >
+            <ScrollArea h={250} offsetScrollbars overscrollBehavior="contain" scrollbarSize={20} scrollHideDelay={500}>
                 {sessions?.map((session) => (
                     <NavLink
                         key={session.id}
+                        component={Link}
                         href={`/${session.id}`}
                         label={session.title || 'Untitled Session'}
                         description={formatDateTime(session.startedAt)}
                         leftSection={
-                            <Badge
-                                color={session.endedAt ? 'gray' : 'green'}
-                                variant="outline"
-                                circle
-                            >
+                            <Badge color={session.endedAt ? 'gray' : 'green'} variant="outline" circle>
                                 A
                             </Badge>
                         }

@@ -1,8 +1,7 @@
-import { SessionTimelineView } from '@/components/session-timeline-view';
+import { SessionView } from '@/components/session-view';
 
 export default async function SessionsPage({ params }: { params: Promise<{ sessionId: string }> }) {
     const { sessionId } = await params;
-    console.log('sessionId: ', sessionId);
 
-    return <SessionTimelineView sessionId={sessionId} />;
+    return <SessionView sessionId={sessionId} />;
 }
