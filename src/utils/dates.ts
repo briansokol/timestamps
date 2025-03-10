@@ -6,7 +6,7 @@ export function useFormattedDateTime(date: Date): string {
     }, [date]);
 }
 
-export function formatDateTime(date: Date): string {
+export function formatDateTime(date?: Date): string {
     if (!date) {
         return '';
     }

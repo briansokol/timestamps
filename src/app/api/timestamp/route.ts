@@ -1,8 +1,8 @@
-import { eq } from 'drizzle-orm';
+import { eq, isNull } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
-import { validateRequest } from '../../../utils/validate';
-import { createTimestampSchema } from '../../../validations/timestamps';
+import { validateRequest } from '@/utils/validate';
+import { createTimestampSchema } from '@/validations/timestamps';
 
 // Create a new timestamp
 export async function POST(request: NextRequest) {
@@ -15,19 +15,42 @@ export async function POST(request: NextRequest) {
 
     try {
         const { sessionId, title } = validation.data;
+        let activeSessionId: string = '';
 
-        // Verify that the session exists
-        const session = await db.select().from(schema.session).where(eq(schema.session.id, sessionId.toString()));
+        if (sessionId) {
+            // Verify that the session exists
+            const session = await db
+                .select()
+                .from(schema.session)
+                .where(eq(schema.session.id, sessionId.toString()));
 
-        if (session.length === 0) {
-            return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+            if (session.length === 0) {
+                return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+            }
+
+            activeSessionId = session[0].id;
+        } else {
+            // Search for active session
+            const activeSession = await db
+                .select()
+                .from(schema.session)
+                .where(isNull(schema.session.endedAt));
+
+            if (activeSession.length > 0) {
+                activeSessionId = activeSession[0].id;
+            } else {
+                // Create a new session
+                const result = await db.insert(schema.session).values({}).returning();
+
+                activeSessionId = result[0].id;
+            }
         }
 
         // Insert the new timestamp
         const result = await db
             .insert(schema.timestamp)
             .values({
-                sessionId,
+                sessionId: activeSessionId,
                 title: title || undefined,
             })
             .returning();
@@ -39,23 +62,10 @@ export async function POST(request: NextRequest) {
     }
 }
 
-// Get all timestamps or filter by sessionId
-export async function GET(request: NextRequest) {
+// Get all timestamps
+export async function GET() {
     try {
-        const { searchParams } = new URL(request.url);
-        const sessionId = searchParams.get('sessionId');
-
-        let timestamps;
-
-        // Filter by sessionId if provided
-        if (sessionId) {
-            timestamps = await db
-                .select()
-                .from(schema.timestamp)
-                .where(eq(schema.timestamp.sessionId, parseInt(sessionId, 10)));
-        } else {
-            timestamps = await db.select().from(schema.timestamp);
-        }
+        const timestamps = await db.select().from(schema.timestamp);
 
         return NextResponse.json(timestamps);
     } catch (error) {

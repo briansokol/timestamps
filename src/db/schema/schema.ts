@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { nanoid } from 'nanoid';
 
 // Format the current date as "March 5, 2025 10:31pm"
@@ -22,7 +22,7 @@ export const timestamp = sqliteTable('timestamp', {
     id: text()
         .$default(() => nanoid())
         .primaryKey(),
-    sessionId: integer('session_id').notNull(),
+    sessionId: text('session_id').notNull(),
     title: text('title'),
     createdAt: text('created_at').$default(currentDateString).notNull(),
 });

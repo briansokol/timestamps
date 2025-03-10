@@ -1,8 +1,10 @@
 {
   "name": "timestamps",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
+  "author":"Brian Sokol <bri@nsokol.net>",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -19,12 +21,18 @@
   },
   "dependencies": {
     "@libsql/client": "0.14.0",
+    "@mantine/core": "7.17.1",
+    "@mantine/dates": "7.17.1",
+    "@mantine/form": "7.17.1",
+    "@mantine/hooks": "7.17.1",
     "@tanstack/react-query": "5.67.1",
+    "dayjs": "1.11.13",
     "drizzle-orm": "0.40.0",
     "nanoid": "5.1.2",
     "next": "15.2.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-icons": "5.5.0",
     "zod": "3.24.2"
   },
   "devDependencies": {
@@ -37,6 +45,9 @@
     "drizzle-kit": "0.30.5",
     "eslint": "9.21.0",
     "eslint-config-next": "15.2.1",
+    "postcss": "8.5.3",
+    "postcss-preset-mantine": "1.17.0",
+    "postcss-simple-vars": "7.0.1",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "0.6.11",
     "tailwindcss": "4.0.11",

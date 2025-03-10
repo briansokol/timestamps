@@ -1,10 +1,8 @@
 import { z } from 'zod';
+import { dateSchema } from '@/validations/shared';
 
 export const createTimestampSchema = z.object({
-    sessionId: z
-        .string()
-        .or(z.number())
-        .transform((val) => (typeof val === 'string' ? parseInt(val, 10) : val)),
+    sessionId: z.string().optional(),
     title: z.string().optional(),
 });
 
@@ -15,3 +13,16 @@ export const updateTimestampSchema = z.object({
 });
 
 export type UpdateTimestampInput = z.infer<typeof updateTimestampSchema>;
+
+export const timestampSchema = z.object({
+    id: z.string(),
+    sessionId: z.string(),
+    title: z.string(),
+    createdAt: dateSchema,
+});
+
+export type Timestamp = z.infer<typeof timestampSchema>;
+
+export const timestampListSchema = z.array(timestampSchema);
+
+export type TimestampList = z.infer<typeof timestampListSchema>;

@@ -1,15 +1,21 @@
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
-import { validateRequest } from '../../../../utils/validate';
-import { updateTimestampSchema } from '../../../../validations/timestamps';
+import { validateRequest } from '@/utils/validate';
+import { updateTimestampSchema } from '@/validations/timestamps';
 
 // Get a specific timestamp by ID
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export async function GET(
+    _request: NextRequest,
+    { params }: { params: Promise<{ timestampId: string }> }
+) {
+    const { timestampId } = await params;
 
     try {
-        const timestamp = await db.select().from(schema.timestamp).where(eq(schema.timestamp.id, id));
+        const timestamp = await db
+            .select()
+            .from(schema.timestamp)
+            .where(eq(schema.timestamp.id, timestampId));
 
         if (timestamp.length === 0) {
             return NextResponse.json({ error: 'Timestamp not found' }, { status: 404 });
@@ -17,7 +23,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
         return NextResponse.json(timestamp[0]);
     } catch (error) {
-        console.error(`Failed to get timestamp with id ${id}:`, error);
+        console.error(`Failed to get timestamp with id ${timestampId}:`, error);
         return NextResponse.json({ error: 'Failed to get timestamp' }, { status: 500 });
     }
 }
@@ -62,11 +68,17 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 // Delete a specific timestamp
-export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+    _request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     const { id } = await params;
 
     try {
-        const deletedTimestamps = await db.delete(schema.timestamp).where(eq(schema.timestamp.id, id)).returning();
+        const deletedTimestamps = await db
+            .delete(schema.timestamp)
+            .where(eq(schema.timestamp.id, id))
+            .returning();
 
         if (deletedTimestamps.length === 0) {
             return NextResponse.json({ error: 'Timestamp not found' }, { status: 404 });

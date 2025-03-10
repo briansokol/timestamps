@@ -2,11 +2,18 @@ import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { db, schema } from '@/utils/db';
 import { validateRequest } from '@/utils/validate';
-import { updateSessionSchema } from '@/validations/sessions';
+import { UpdateSessionInput, updateSessionSchema } from '@/validations/sessions';
 
 // Update a specific session
-export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export async function PUT(
+    request: NextRequest,
+    { params }: { params: Promise<{ sessionId: string }> }
+) {
+    const { sessionId } = await params;
+
+    if (!sessionId) {
+        return NextResponse.json({ error: 'Session ID cannot be empty' }, { status: 400 });
+    }
 
     // Validate the request
     const validation = await validateRequest(request, updateSessionSchema);
@@ -17,18 +24,19 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     try {
         // The data is now validated and typed
-        const { title, endedAt } = validation.data;
+        const { title, startedAt, endedAt } = validation.data;
 
         // Prepare update object, only include fields that were provided
-        const updateData: { title?: string; endedAt?: string } = {};
+        const updateData: UpdateSessionInput = {};
         if (title !== undefined) updateData.title = title;
+        if (startedAt !== undefined) updateData.startedAt = startedAt;
         if (endedAt !== undefined) updateData.endedAt = endedAt;
 
         // Update the session in the database
         const updatedSessions = await db
             .update(schema.session)
             .set(updateData)
-            .where(eq(schema.session.id, id))
+            .where(eq(schema.session.id, sessionId))
             .returning();
 
         // If no session was found with the given id
@@ -39,17 +47,27 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         // Return the updated session
         return NextResponse.json(updatedSessions[0]);
     } catch (error) {
-        console.error(`Failed to update session with id ${id}:`, error);
+        console.error(`Failed to update session with id ${sessionId}:`, error);
         return NextResponse.json({ error: 'Failed to update session' }, { status: 500 });
     }
 }
 
 // Get a specific session
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export async function GET(
+    _request: NextRequest,
+    { params }: { params: Promise<{ sessionId: string }> }
+) {
+    const { sessionId } = await params;
+
+    if (!sessionId) {
+        return NextResponse.json({ error: 'Session ID cannot be empty' }, { status: 400 });
+    }
 
     try {
-        const session = await db.select().from(schema.session).where(eq(schema.session.id, id));
+        const session = await db
+            .select()
+            .from(schema.session)
+            .where(eq(schema.session.id, sessionId));
 
         if (session.length === 0) {
             return NextResponse.json({ error: 'Session not found' }, { status: 404 });
@@ -57,17 +75,23 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
         return NextResponse.json(session[0]);
     } catch (error) {
-        console.error(`Failed to get session with id ${id}:`, error);
+        console.error(`Failed to get session with id ${sessionId}:`, error);
         return NextResponse.json({ error: 'Failed to get session' }, { status: 500 });
     }
 }
 
 // Delete a specific session
-export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export async function DELETE(
+    _request: NextRequest,
+    { params }: { params: Promise<{ sessionId: string }> }
+) {
+    const { sessionId } = await params;
 
     try {
-        const deletedSessions = await db.delete(schema.session).where(eq(schema.session.id, id)).returning();
+        const deletedSessions = await db
+            .delete(schema.session)
+            .where(eq(schema.session.id, sessionId))
+            .returning();
 
         if (deletedSessions.length === 0) {
             return NextResponse.json({ error: 'Session not found' }, { status: 404 });
@@ -75,7 +99,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
         return NextResponse.json({ success: true, deleted: deletedSessions[0] });
     } catch (error) {
-        console.error(`Failed to delete session with id ${id}:`, error);
+        console.error(`Failed to delete session with id ${sessionId}:`, error);
         return NextResponse.json({ error: 'Failed to delete session' }, { status: 500 });
     }
 }
