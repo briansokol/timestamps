@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7623:7623"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    volumes:
+      - timestamps-sqlite:/app/sqlite
+    networks:
+      - timestamps-network
+
+networks:
+  timestamps-network:
+    driver: bridge
+
+volumes:
+  timestamps-sqlite:

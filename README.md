@@ -48,40 +48,32 @@ npm run db:migrate
 
 ## Deploying with Docker
 
-First run this command once to create the Docker volume:
+Ensure you have Docker and Docker-Compose installed.
+
+This command will build the image and run it using docker-compose:
 
 ```bash
-npm run docker:volume
+npm run docker:up
 ```
 
-Build the container image by running:
+Stop running services and networks, but keep volumes:
 
 ```bash
-npm run docker:build
+npm run docker:down
 ```
 
-Finally, run the container by running:
+If you pull newer code, run this to force a rebuild and then start the container:
 
 ```bash
-npm run docker:run
-```
-
-You can do all of this with one command for the first run:
-
-```bash
-npm run docker
+npm run docker:rebuild
 ```
 
 ## Uninstalling
 
-Stop the running Docker container by running
+If you need to completely remove everything, _including the database_, run this command:
 
 ```bash
-npm run docker:stop
+npm run docker:uninstall
 ```
 
-You can completely remove the container and volume by running the following command (this will destroy the database!):
-
-```bash
-npm run docker:remove
-```
+This cannot be undone, so be sure you really want to delete everything before running it.

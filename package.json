@@ -12,12 +12,11 @@
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
-    "docker": "npm run docker:volume && npm run docker:build && npm run docker:run",
-    "docker:build": "docker build -t timestamps .",
-    "docker:run": "docker run -v timestamps_data:/app/sqlite -p 7623:7623 --name timestamps timestamps",
-    "docker:volume": "docker volume create timestamps_data",
-    "docker:stop": "docker stop timestamps && docker rm timestamps",
-    "docker:remove": "npm run docker:stop || docker volume rm timestamps_data"
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:rebuild": "docker-compose up --force-recreate --build -d",
+    "docker:logs": "docker logs timestamps",
+    "docker:uninstall": "docker-compose down --rmi all -v"
   },
   "dependencies": {
     "@libsql/client": "0.14.0",
