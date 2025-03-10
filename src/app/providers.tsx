@@ -8,7 +8,7 @@ export default function Providers({ children }: { children: ReactNode }) {
     const [queryClient] = useState(() => new QueryClient());
 
     return (
-        <MantineProvider forceColorScheme="dark">
+        <MantineProvider defaultColorScheme="dark" forceColorScheme="dark">
             <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
         </MantineProvider>
     );
