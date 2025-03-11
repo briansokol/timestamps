@@ -43,28 +43,30 @@ export function SessionView({ sessionId }: SessionViewProps) {
                 <Title order={2}>{session?.title}</Title>
                 <Text size="md">{`${formatDateTime(session?.startedAt)}${session?.endedAt ? ` - ${formatDateTime(session?.endedAt)}` : ''}`}</Text>
             </div>
-            <Tabs defaultValue="timeline">
-                <Tabs.List>
-                    <Tabs.Tab value="timeline">Timeline</Tabs.Tab>
-                    <Tabs.Tab value="youtube">YouTube</Tabs.Tab>
-                    <Tabs.Tab value="edit">Edit</Tabs.Tab>
-                </Tabs.List>
+            {session ? (
+                <Tabs defaultValue="timeline">
+                    <Tabs.List>
+                        <Tabs.Tab value="timeline">Timeline</Tabs.Tab>
+                        <Tabs.Tab value="youtube">YouTube</Tabs.Tab>
+                        <Tabs.Tab value="edit">Edit</Tabs.Tab>
+                    </Tabs.List>
 
-                <Tabs.Panel value="timeline">
-                    <Space h="md" />
-                    <SessionTimelineView timestamps={timestamps} />
-                </Tabs.Panel>
+                    <Tabs.Panel value="timeline">
+                        <Space h="md" />
+                        <SessionTimelineView timestamps={timestamps} />
+                    </Tabs.Panel>
 
-                <Tabs.Panel value="youtube">
-                    <Space h="md" />
-                    <SessionYouTubeView timestamps={timestamps} />
-                </Tabs.Panel>
+                    <Tabs.Panel value="youtube">
+                        <Space h="md" />
+                        <SessionYouTubeView timestamps={timestamps} />
+                    </Tabs.Panel>
 
-                <Tabs.Panel value="edit">
-                    <Space h="md" />
-                    <SessionEditView timestamps={timestamps} />
-                </Tabs.Panel>
-            </Tabs>
+                    <Tabs.Panel value="edit">
+                        <Space h="md" />
+                        <SessionEditView timestamps={timestamps} sessionId={session.id} />
+                    </Tabs.Panel>
+                </Tabs>
+            ) : null}
         </Stack>
     );
 }

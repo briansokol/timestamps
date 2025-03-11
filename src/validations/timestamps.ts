@@ -4,12 +4,16 @@ import { dateSchema } from '@/validations/shared';
 export const createTimestampSchema = z.object({
     sessionId: z.string().optional(),
     title: z.string().optional(),
+    createdAt: dateSchema.optional(),
 });
 
 export type CreateTimestampInput = z.infer<typeof createTimestampSchema>;
 
 export const updateTimestampSchema = z.object({
-    title: z.string().optional(),
+    id: z.string(),
+    sessionId: z.string(),
+    title: z.string().nullable(),
+    createdAt: z.string().datetime(),
 });
 
 export type UpdateTimestampInput = z.infer<typeof updateTimestampSchema>;
