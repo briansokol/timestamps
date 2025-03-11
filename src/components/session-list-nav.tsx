@@ -1,9 +1,13 @@
+'use client';
+
 import { Badge, Loader, NavLink, ScrollArea, Title } from '@mantine/core';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useGetSessionList } from '@/hooks/sessions';
 import { formatDateTime } from '@/utils/datetime';
 
 export function SessionListNav() {
+    const { sessionId: activeSessionId } = useParams<{ sessionId?: string }>();
     const { sessions, isLoading, error } = useGetSessionList();
 
     if (isLoading) {
@@ -30,6 +34,7 @@ export function SessionListNav() {
                                 A
                             </Badge>
                         }
+                        active={session.id === activeSessionId}
                     />
                 ))}
             </ScrollArea>

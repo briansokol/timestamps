@@ -1,6 +1,7 @@
 'use client';
 
 import { Loader, Space, Stack, Tabs, Text, Title } from '@mantine/core';
+import { SessionEditView } from '@/components/session-edit-view';
 import { SessionTimelineView } from '@/components/session-timeline-view';
 import { SessionYouTubeView } from '@/components/session-youtube-view';
 import { useGetSessionById } from '@/hooks/sessions';
@@ -46,6 +47,7 @@ export function SessionView({ sessionId }: SessionViewProps) {
                 <Tabs.List>
                     <Tabs.Tab value="timeline">Timeline</Tabs.Tab>
                     <Tabs.Tab value="youtube">YouTube</Tabs.Tab>
+                    <Tabs.Tab value="edit">Edit</Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panel value="timeline">
@@ -56,6 +58,11 @@ export function SessionView({ sessionId }: SessionViewProps) {
                 <Tabs.Panel value="youtube">
                     <Space h="md" />
                     <SessionYouTubeView timestamps={timestamps} />
+                </Tabs.Panel>
+
+                <Tabs.Panel value="edit">
+                    <Space h="md" />
+                    <SessionEditView timestamps={timestamps} />
                 </Tabs.Panel>
             </Tabs>
         </Stack>

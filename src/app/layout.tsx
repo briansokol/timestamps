@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     description: 'Store and format timestamps',
 };
 
-export default function RootLayout({
-    children,
-}: Readonly<{
+interface RootLayoutProps {
     children: React.ReactNode;
-}>) {
+}
+
+export default async function RootLayout({ children }: Readonly<RootLayoutProps>) {
     return (
         <html lang="en" {...mantineHtmlProps}>
             <head>

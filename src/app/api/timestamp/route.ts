@@ -19,10 +19,7 @@ export async function POST(request: NextRequest) {
 
         if (sessionId) {
             // Verify that the session exists
-            const session = await db
-                .select()
-                .from(schema.session)
-                .where(eq(schema.session.id, sessionId.toString()));
+            const session = await db.select().from(schema.session).where(eq(schema.session.id, sessionId.toString()));
 
             if (session.length === 0) {
                 return NextResponse.json({ error: 'Session not found' }, { status: 404 });
@@ -31,10 +28,7 @@ export async function POST(request: NextRequest) {
             activeSessionId = session[0].id;
         } else {
             // Search for active session
-            const activeSession = await db
-                .select()
-                .from(schema.session)
-                .where(isNull(schema.session.endedAt));
+            const activeSession = await db.select().from(schema.session).where(isNull(schema.session.endedAt));
 
             if (activeSession.length > 0) {
                 activeSessionId = activeSession[0].id;

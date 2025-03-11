@@ -17,7 +17,7 @@ export type UpdateTimestampInput = z.infer<typeof updateTimestampSchema>;
 export const timestampSchema = z.object({
     id: z.string(),
     sessionId: z.string(),
-    title: z.string(),
+    title: z.string().nullable(),
     createdAt: dateSchema,
 });
 
