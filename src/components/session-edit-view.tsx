@@ -18,7 +18,7 @@ export function SessionEditView({ timestamps }: SessionEditViewProps) {
 
     const setFormValues = useCallback((timestamp: Timestamp) => {
         setEditId(timestamp.id);
-        setTitle(timestamp.title);
+        setTitle(timestamp.title ?? '');
         setCreatedAt(timestamp.createdAt);
     }, []);
 
