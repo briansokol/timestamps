@@ -1,0 +1,39 @@
+name: Main Build
+on:
+    push:
+        branches:
+            - main
+jobs:
+    Test-Main:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 3
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - name: Install Dependencies
+              run: npm ci
+            - name: Run Tests
+              run: npm run test:ci
+    Build-Main:
+        runs-on: ubuntu-latest
+        needs: Test-Main
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 3
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - name: Install Dependencies
+              run: npm ci
+            - name: Build
+              run: npm run build
