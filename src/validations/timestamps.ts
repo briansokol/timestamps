@@ -10,8 +10,8 @@ export const createTimestampSchema = z.object({
 export type CreateTimestampInput = z.infer<typeof createTimestampSchema>;
 
 export const updateTimestampSchema = z.object({
-    id: z.string(),
-    sessionId: z.string(),
+    id: z.string().min(1),
+    sessionId: z.string().min(1),
     title: z.string().nullable(),
     createdAt: z.string().datetime(),
 });
@@ -19,8 +19,8 @@ export const updateTimestampSchema = z.object({
 export type UpdateTimestampInput = z.infer<typeof updateTimestampSchema>;
 
 export const timestampSchema = z.object({
-    id: z.string(),
-    sessionId: z.string(),
+    id: z.string().min(1),
+    sessionId: z.string().min(1),
     title: z.string().nullable(),
     createdAt: dateSchema,
 });

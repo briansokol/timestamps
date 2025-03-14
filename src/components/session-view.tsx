@@ -1,12 +1,12 @@
 'use client';
 
-import { Loader, Space, Stack, Tabs, Text, Title } from '@mantine/core';
+import { Loader, Space, Stack, Tabs } from '@mantine/core';
 import { SessionEditView } from '@/components/session-edit-view';
 import { SessionTimelineView } from '@/components/session-timeline-view';
 import { SessionYouTubeView } from '@/components/session-youtube-view';
 import { useGetSessionById } from '@/hooks/sessions';
 import { useGetTimestampListBySessionId } from '@/hooks/timestamps';
-import { formatDateTime } from '@/utils/datetime';
+import { SessionTitleView } from './session-title-view';
 
 interface SessionViewProps {
     sessionId: string;
@@ -39,10 +39,7 @@ export function SessionView({ sessionId }: SessionViewProps) {
 
     return (
         <Stack gap="md">
-            <div>
-                <Title order={2}>{session?.title}</Title>
-                <Text size="md">{`${formatDateTime(session?.startedAt)}${session?.endedAt ? ` - ${formatDateTime(session?.endedAt)}` : ''}`}</Text>
-            </div>
+            <SessionTitleView session={session} />
             {session ? (
                 <Tabs defaultValue="timeline">
                     <Tabs.List>

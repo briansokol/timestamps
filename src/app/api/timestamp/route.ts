@@ -33,10 +33,8 @@ export async function POST(request: NextRequest) {
             if (activeSession.length > 0) {
                 activeSessionId = activeSession[0].id;
             } else {
-                // Create a new session
-                const result = await db.insert(schema.session).values({}).returning();
-
-                activeSessionId = result[0].id;
+                // No active session found
+                return NextResponse.json({ error: 'Session not found' }, { status: 404 });
             }
         }
 

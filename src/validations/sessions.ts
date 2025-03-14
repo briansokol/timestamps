@@ -11,16 +11,17 @@ export const createSessionSchema = z.object({
 export type CreateSessionInput = z.infer<typeof createSessionSchema>;
 
 export const updateSessionSchema = z.object({
-    title: z.string().optional(),
-    startedAt: z.string().datetime().optional(),
-    endedAt: z.string().datetime().optional(),
+    id: z.string().min(1),
+    title: z.string().min(1),
+    startedAt: z.string().datetime(),
+    endedAt: z.string().datetime().nullable(),
 });
 
 export type UpdateSessionInput = z.infer<typeof updateSessionSchema>;
 
 export const sessionSchema = z.object({
-    id: z.string(),
-    title: z.string(),
+    id: z.string().min(1),
+    title: z.string().min(1),
     startedAt: dateSchema,
     endedAt: dateSchema.nullable(),
 });
