@@ -50,7 +50,7 @@ export function SessionView({ sessionId }: SessionViewProps) {
 
                     <Tabs.Panel value="timeline">
                         <Space h="md" />
-                        <SessionTimelineView timestamps={timestamps} />
+                        <SessionTimelineView timestamps={timestamps} session={session} />
                     </Tabs.Panel>
 
                     <Tabs.Panel value="youtube">
