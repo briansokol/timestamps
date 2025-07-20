@@ -21,7 +21,13 @@ export function SessionListNav() {
     return (
         <div>
             <Title order={3}>Sessions</Title>
-            <ScrollArea h={250} offsetScrollbars overscrollBehavior="contain" scrollbarSize={20} scrollHideDelay={500}>
+            <ScrollArea
+                h="calc(100vh - 120px)"
+                offsetScrollbars
+                overscrollBehavior="contain"
+                scrollbarSize={20}
+                scrollHideDelay={500}
+            >
                 {sessions?.map((session) => (
                     <NavLink
                         key={session.id}
