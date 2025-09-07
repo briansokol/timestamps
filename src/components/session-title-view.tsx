@@ -32,8 +32,6 @@ export function SessionTitleView({ session }: SessionTitleViewProps) {
 
     const saveMutation = useMutation({
         mutationFn: async (session: UpdateSessionInput) => {
-            console.log(session);
-            console.log(updateSessionSchema.parse(session));
             const data = updateSessionSchema.parse(session);
 
             return fetch(`/api/session/${session.id}`, {

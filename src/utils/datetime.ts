@@ -12,7 +12,7 @@ export function formatDateTime(date?: Date): string {
     }
 
     return date.toLocaleString('en-US', {
-        month: 'long',
+        month: 'short',
         day: 'numeric',
         year: 'numeric',
         hour: 'numeric',
