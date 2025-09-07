@@ -1,24 +1,38 @@
-import { useQuery } from '@tanstack/react-query';
-import {
-    Session,
-    SessionListResponse,
-    sessionListResponseSchema,
-    sessionSchema,
-} from '@/validations/sessions';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { Session, SessionListResponse, sessionListResponseSchema, sessionSchema } from '@/validations/sessions';
 
 export function useGetSessionList() {
-    const { data, isLoading, error } = useQuery<SessionListResponse>({
-        queryKey: ['sessions'],
-        queryFn: async () => {
-            const response = await fetch('/api/session?page=1&pageSize=10');
-            if (!response.ok) {
-                throw new Error('Failed to fetch sessions');
-            }
-            return sessionListResponseSchema.parse(await response.json());
-        },
-    });
+    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useInfiniteQuery<SessionListResponse>({
+            queryKey: ['sessions'],
+            queryFn: async ({ pageParam = 1 }) => {
+                const response = await fetch(`/api/session?page=${pageParam}&pageSize=20`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch sessions');
+                }
+                return sessionListResponseSchema.parse(await response.json());
+            },
+            getNextPageParam: (lastPage) => {
+                console.log('Last page:', lastPage);
+                const { page, totalPages } = lastPage.pagination;
+                return page < totalPages ? page + 1 : undefined;
+            },
+            initialPageParam: 1,
+        });
 
-    return { sessions: data?.data, pagination: data?.pagination, isLoading, error };
+    // Flatten all sessions from all pages
+    const sessions = data?.pages.flatMap((page) => page.data) ?? [];
+    const pagination = data?.pages[data.pages.length - 1]?.pagination;
+
+    return {
+        sessions,
+        pagination,
+        isLoading,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    };
 }
 
 export function useGetSessionById(sessionId?: string) {
