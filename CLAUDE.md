@@ -55,6 +55,13 @@ Two main entities with nanoid primary keys:
 
 ## Development Guidelines
 
+### Working with Claude Code
+- **Use Subagents**: Leverage specialized subagents when appropriate to handle complex, multi-step tasks more efficiently
+  - `unit-test-expert`: For writing, updating, running, and debugging tests
+  - `Explore`: For exploring the codebase, searching for patterns, or answering architectural questions
+  - `general-purpose`: For complex research, multi-step tasks, or open-ended searches
+- Let subagents run autonomously for their specialized tasks rather than performing all steps manually
+
 ### Code Standards
 - Add JSDoc comments above class and function definitions
 - Add TypeScript types for all function inputs and return values

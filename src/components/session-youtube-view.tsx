@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, Code, CopyButton, Stack } from '@mantine/core';
-import { useMemo } from 'react';
+import { Button, Code, Stack } from '@mantine/core';
+import { useMemo, useRef } from 'react';
 import { formatTimeDuration } from '@/utils/datetime';
 import { TimestampList } from '@/validations/timestamps';
 
@@ -10,6 +10,8 @@ interface SessionYouTubeViewProps {
 }
 
 export function SessionYouTubeView({ timestamps }: SessionYouTubeViewProps) {
+    const codeRef = useRef<HTMLDivElement>(null);
+
     const formattedTimestampsArray = useMemo(() => {
         if (Array.isArray(timestamps)) {
             return timestamps.map(
@@ -21,18 +23,24 @@ export function SessionYouTubeView({ timestamps }: SessionYouTubeViewProps) {
         }
     }, [timestamps]);
 
+    const handleSelectText = () => {
+        if (codeRef.current) {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(codeRef.current);
+            selection?.removeAllRanges();
+            selection?.addRange(range);
+        }
+    };
+
     return (
         <Stack align="stretch" justify="center" gap="md">
             {formattedTimestampsArray != null && (
-                <CopyButton value={formattedTimestampsArray.join('\n')}>
-                    {({ copied, copy }) => (
-                        <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
-                            {copied ? 'Copied' : 'Copy'}
-                        </Button>
-                    )}
-                </CopyButton>
+                <Button onClick={handleSelectText}>Select Text</Button>
             )}
-            <Code block>{formattedTimestampsArray?.join('\n')}</Code>
+            <Code block fz="md" ref={codeRef}>
+                {formattedTimestampsArray?.join('\n')}
+            </Code>
         </Stack>
     );
 }
