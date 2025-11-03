@@ -89,14 +89,141 @@ Two main entities with nanoid primary keys:
 ### Looking up documentation
 
 - Always use **context7** MCP when I need code generation, setup or configuration steps, or library/API documentation. Use the context7 MCP server to get the library ID from the name of the library, and then get the library docs without me having to ask.
+- Some common context7 library IDs are:
+    - **NextJS**: /vercel/next.js
+    - **React**: /reactjs/react.dev
+    - **Mantine**: /mantinedev/mantine
+    - **Drizzle ORM**: /replit/drizzle-orm
+    - **Vitest**: /vitest-dev/vitest
+    - **React Testing Library**: /testing-library/react-testing-library
 
 ### Working with Claude Code
 
-- **Use Subagents**: Leverage specialized subagents when appropriate to handle complex, multi-step tasks more efficiently
-    - `unit-test-expert`: For writing, updating, running, and debugging tests
-    - `Explore`: For exploring the codebase, searching for patterns, or answering architectural questions
-    - `general-purpose`: For complex research, multi-step tasks, or open-ended searches
-- Let subagents run autonomously for their specialized tasks rather than performing all steps manually
+#### Custom Subagents
+
+Leverage specialized subagents to handle complex, multi-step tasks more efficiently. Let subagents run autonomously for their specialized tasks rather than performing all steps manually.
+
+##### `unit-test-expert`
+
+**Use for all test-related work:**
+
+- Writing new unit tests for functions or components
+- Updating existing tests after code changes
+- Running tests and analyzing failures
+- Debugging test issues or flaky tests
+- Improving test coverage for specific modules
+- Proactively after implementing new features or fixing bugs
+
+**When to use:**
+
+- User explicitly asks for test-related work (e.g., "write tests for...", "fix the failing test...")
+- After implementing a new feature (proactive use to ensure proper test coverage)
+- After fixing a bug (proactive use to add regression tests)
+
+**Examples:**
+
+- "Write tests for the new session export feature"
+- "The timestamp validation tests are failing, can you fix them?"
+- After implementing a feature: proactively use to add comprehensive test coverage
+
+##### `Explore`
+
+**Use for codebase exploration and understanding:**
+
+- Finding files by patterns or naming conventions (e.g., "all React components", "API routes")
+- Searching for specific keywords or code patterns across the codebase
+- Answering architectural questions (e.g., "How does authentication work?", "Where are errors handled?")
+- Understanding code flow and relationships between modules
+- Locating specific implementations when unsure of the exact file location
+
+**When to use:**
+
+- Questions starting with "Where is...", "How does...", "What is the structure of..."
+- Need to understand existing patterns before implementing new features
+- Looking for multiple files or components that follow a pattern
+- Searching for usage of a specific library or function across the codebase
+
+**Thoroughness levels:**
+
+- `quick`: Basic searches, known patterns
+- `medium`: Moderate exploration, some uncertainty
+- `very thorough`: Comprehensive analysis, multiple naming conventions
+
+**Examples:**
+
+- "Where are API endpoints defined in this project?"
+- "How is session state managed across components?"
+- "Find all components that use the useTimestamps hook"
+- "What is the overall codebase structure?"
+
+##### `playwright-visual-tester`
+
+**Use for browser-based testing and visual validation:**
+
+- Validating UI changes render correctly in a real browser
+- Testing user interactions and workflows end-to-end
+- Taking screenshots for visual regression testing
+- Verifying responsive design across different viewport sizes
+- Testing form submissions and data persistence
+- Validating client-side JavaScript behavior
+
+**When to use:**
+
+- After making UI changes that need visual verification
+- When implementing new user-facing features
+- Testing complete user workflows (e.g., create session → add timestamp → export)
+- Validating responsive design changes
+- Debugging layout or styling issues
+
+**Examples:**
+
+- "I just updated the session card layout, can you verify it renders correctly?"
+- "Test the complete flow of creating a session and adding timestamps"
+- "Check if the export modal displays properly on mobile viewports"
+- "Validate that the timestamp deletion workflow works end-to-end"
+
+##### `docs-fetcher`
+
+**Use for retrieving library and framework documentation:**
+
+- Looking up API documentation for specific libraries
+- Understanding how to use a framework feature correctly
+- Getting up-to-date documentation for dependencies
+- Learning best practices for a library being used
+
+**When to use:**
+
+- Need current documentation for a library (automatically uses context7 MCP)
+- Implementing a feature with a library you're less familiar with
+- Want to verify correct API usage for a dependency
+
+**Examples:**
+
+- "How do I use React Query mutations properly?"
+- "What's the correct way to handle forms with Mantine?"
+- "Get the latest documentation for Drizzle ORM migrations"
+
+##### `general-purpose`
+
+**Use for complex, multi-step tasks that don't fit other categories:**
+
+- Complex research requiring multiple rounds of searching
+- Tasks that span multiple domains (codebase + documentation + web research)
+- Multi-step refactoring across many files
+- Open-ended investigations that may require adaptive searching
+
+**When to use:**
+
+- Task requires more than 3-4 distinct steps
+- Uncertain about the full scope of work needed
+- Need to gather information from multiple sources
+- Combining exploration, implementation, and testing in a complex workflow
+
+**Examples:**
+
+- "Analyze the entire codebase and suggest performance improvements"
+- "Research and implement a new feature for batch timestamp operations"
+- "Investigate why the application is slow and propose solutions"
 
 ### Code Standards
 

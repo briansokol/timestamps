@@ -67,6 +67,16 @@ export function SessionTitleView({ session }: SessionTitleViewProps) {
                             radius="lg"
                             value={title}
                             onChange={(event) => setTitle(event.currentTarget.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    saveMutation.mutate({
+                                        ...session,
+                                        title,
+                                        startedAt: session.startedAt.toISOString(),
+                                        endedAt: session.endedAt?.toISOString() ?? null,
+                                    });
+                                }
+                            }}
                         />
                         <ActionIcon.Group>
                             <ActionIcon

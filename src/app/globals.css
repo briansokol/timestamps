@@ -22,3 +22,31 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+/* Custom Mantine theme overrides */
+:root {
+    /* Override default borders to use midnight color */
+    --mantine-color-default-border: var(--mantine-color-midnight-5);
+
+    /* Override hover colors for nav items */
+    --mantine-color-dark-6: var(--mantine-color-midnight-5);
+}
+
+/* AppShell borders */
+.mantine-AppShell-header {
+    border-bottom: 1px solid var(--mantine-color-midnight-5) !important;
+}
+
+.mantine-AppShell-navbar {
+    border-right: 1px solid var(--mantine-color-midnight-5) !important;
+}
+
+/* NavLink hover state */
+.mantine-NavLink-root:hover {
+    background-color: var(--mantine-color-midnight-5) !important;
+}
+
+/* Timeline item borders/outlines */
+.mantine-Timeline-item::before {
+    border-color: var(--mantine-color-midnight-5) !important;
+}

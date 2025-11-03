@@ -107,9 +107,9 @@ export function SessionListNav() {
                         leftSection={
                             <span style={{ fontSize: '1.2rem' }}>
                                 {session.endedAt ? (
-                                    <IoEllipse style={{ color: 'DarkSlateGrey ' }} />
+                                    <IoEllipse style={{ color: 'var(--mantine-color-dimmed)' }} />
                                 ) : (
-                                    <IoCaretForwardCircle style={{ color: 'var(--mantine-color-green-9)' }} />
+                                    <IoCaretForwardCircle style={{ color: 'var(--mantine-color-green-4)' }} />
                                 )}
                             </span>
                         }
