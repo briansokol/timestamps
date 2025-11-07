@@ -21,7 +21,7 @@ export function SessionEditView({ timestamps, sessionId }: SessionEditViewProps)
     const setFormValues = useCallback((timestamp: Timestamp) => {
         setEditId(timestamp.id);
         setTitle(timestamp.title ?? '');
-        setCreatedAt(timestamp.createdAt);
+        setCreatedAt(new Date(timestamp.createdAt));
     }, []);
 
     const clearFormValues = useCallback(() => {
@@ -78,7 +78,7 @@ export function SessionEditView({ timestamps, sessionId }: SessionEditViewProps)
                             valueFormat="MMM D, YYYY hh:mm:ss A"
                             placeholder="When?"
                             value={createdAt}
-                            onChange={(date) => setCreatedAt(date)}
+                            onChange={(date) => setCreatedAt(date as Date | null)}
                         />
                     ) : (
                         formatDateTime(timestamp.createdAt)
