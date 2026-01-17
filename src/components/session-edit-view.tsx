@@ -32,6 +32,27 @@ export function SessionEditView({ timestamps, sessionId }: SessionEditViewProps)
 
     const queryClient = useQueryClient();
 
+    const deleteMutation = useMutation({
+        mutationFn: async (timestampId: string) => {
+            const response = await fetch(`/api/timestamp/${timestampId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete timestamp');
+            }
+            return response.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['timestamps', sessionId] });
+        },
+    });
+
+    const handleDelete = (timestampId: string) => {
+        if (window.confirm('Are you sure you want to delete this timestamp?')) {
+            deleteMutation.mutate(timestampId);
+        }
+    };
+
     const saveMutation = useMutation({
         mutationFn: async (timestamp: Timestamp) => {
             const data = updateTimestampSchema.parse({
@@ -131,6 +152,8 @@ export function SessionEditView({ timestamps, sessionId }: SessionEditViewProps)
                                     color="red"
                                     aria-label="Delete"
                                     disabled={editId !== null}
+                                    loading={deleteMutation.isPending && deleteMutation.variables === timestamp.id}
+                                    onClick={() => handleDelete(timestamp.id)}
                                 >
                                     <MdDelete />
                                 </ActionIcon>
@@ -140,7 +163,7 @@ export function SessionEditView({ timestamps, sessionId }: SessionEditViewProps)
                 </Table.Td>
             </Table.Tr>
         ));
-    }, [timestamps, editId, createdAt, title, clearFormValues, setFormValues, saveMutation, sessionId]);
+    }, [timestamps, editId, createdAt, title, clearFormValues, setFormValues, saveMutation, sessionId, deleteMutation, handleDelete]);
 
     return (
         <>
