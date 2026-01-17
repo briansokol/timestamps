@@ -2,7 +2,7 @@
 
 import { ActionIcon, Group, Text, TextInput, Title } from '@mantine/core';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MdClear, MdDone, MdEdit } from 'react-icons/md';
 import { formatDateTime } from '@/utils/datetime';
 import { Session, UpdateSessionInput, updateSessionSchema } from '@/validations/sessions';
@@ -14,6 +14,14 @@ interface SessionTitleViewProps {
 export function SessionTitleView({ session }: SessionTitleViewProps) {
     const [editTitle, setEditTitle] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (editTitle && inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+        }
+    }, [editTitle]);
 
     const setFormValues = useCallback(
         (session: Session) => {
@@ -61,6 +69,7 @@ export function SessionTitleView({ session }: SessionTitleViewProps) {
                 {editTitle ? (
                     <>
                         <TextInput
+                            ref={inputRef}
                             aria-label="Enter session title"
                             placeholder="Title"
                             size="md"
@@ -75,6 +84,8 @@ export function SessionTitleView({ session }: SessionTitleViewProps) {
                                         startedAt: session.startedAt.toISOString(),
                                         endedAt: session.endedAt?.toISOString() ?? null,
                                     });
+                                } else if (event.key === 'Escape') {
+                                    clearFormValues();
                                 }
                             }}
                         />
