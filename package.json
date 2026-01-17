@@ -1,6 +1,6 @@
 {
   "name": "timestamps",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": true,
   "type": "module",
   "author": "Brian Sokol <bri@nsokol.net>",
@@ -40,7 +40,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
-    "@fission-ai/openspec": "0.13.0",
     "@tailwindcss/postcss": "4.1.16",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.0",
